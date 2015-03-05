@@ -5,7 +5,7 @@ from .extensions import (db, migrate, config, debug_toolbar, bcrypt, login_manag
 from .views import coaction
 
 
-SQLALCHEMY_DATABASE_URI = "postrges://localhost/coaction"
+SQLALCHEMY_DATABASE_URI = "postgres://localhost/coaction"
 DEBUG = True
 SECRET_KEY = 'development-key'
 DEBUG_TB_INTERCEPT_REDIRECTS = False
