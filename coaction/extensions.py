@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Extensions module."""
 
 from flask.ext.sqlalchemy import SQLAlchemy
