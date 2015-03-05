@@ -14,7 +14,7 @@ def index():
 
 ## Add your API views here
 
-@coaction.route("api/tasks", methods=["GET"])
+@coaction.route("/api/tasks", methods=["GET"])
 def get_tasks():
     tasks = Task.query.all()
     serializer = TaskSchema(many=True)
@@ -22,7 +22,7 @@ def get_tasks():
     return jsonify({"tasks": result.data})
 
 
-@coaction.route("api/tasks", methods=["POST"])
+@coaction.route("/api/tasks", methods=["POST"])
 def add_tasks():
     if not request.get_json():
         return jsonify({"message": "No input data provided"}), 400
