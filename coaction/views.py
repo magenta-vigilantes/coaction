@@ -13,6 +13,7 @@ def index():
 
 
 ## Add your API views here
+
 @coaction.route("api/tasks", methods=["GET"])
 def get_tasks():
     tasks = Task.query.all()
