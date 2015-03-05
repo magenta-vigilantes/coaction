@@ -1,5 +1,7 @@
-from flask import Blueprint, flash
+from flask import Blueprint, flash, jsonify
 from .models import Task, TaskSchema
+
+
 
 coaction = Blueprint("coaction", __name__, static_folder="./static")
 task_schema = TaskSchema()
@@ -10,3 +12,10 @@ def index():
 
 
 ## Add your API views here
+@coaction.route("api/tasks", methods="GET")
+def get_tasks():
+    tasks = Task.query.all()
+    serializer = TaskSchema(many=True)
+    result = serializer.dump(tasks)
+    return jsonify({"tasks": result.data})
+
