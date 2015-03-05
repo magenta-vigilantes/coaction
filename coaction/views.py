@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from flask import Blueprint, flash, jsonify
-=======
 from flask import Blueprint, flash, jsonify, request
->>>>>>> endpoint_add_tasks
 from .models import Task, TaskSchema
 from . import db
 
