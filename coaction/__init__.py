@@ -1,13 +1,14 @@
 from flask import Flask, render_template
 
 from . import models
-from .extensions import db, migrate, config
+from .extensions import (db, migrate, config, debug_toolbar, bcrypt, login_manager)
 from .views import coaction
 
 
-SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/coaction.db"
+SQLALCHEMY_DATABASE_URI = "postrges://localhost/coaction"
 DEBUG = True
 SECRET_KEY = 'development-key'
+DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 
 def create_app():
