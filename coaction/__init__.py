@@ -12,7 +12,7 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask("coaction")
     app.config.from_object(__name__)
     app.register_blueprint(coaction)
 
