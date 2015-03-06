@@ -33,9 +33,8 @@ def add_tasks():
     errors = task_schema.validate(input_data)
     if errors:
         return jsonify(errors), 400
-    task = Task(input_data)
+    task = Task(**input_data)
     db.session.add(task)
     db.session.commit()
     result = task_schema.dump(Task.query.get(task.id))
     return jsonify({"message": "Created new task", "task": result.data})
-
