@@ -2,8 +2,9 @@ app.factory('Task', function(){
   return function(spec) {
     spec = spec || {};
     return {
-      url: spec.url
-      // created: Date.now();
+      due_date: spec.due_date,
+      status: spec.status || 'new',
+      title: spec.title
     };
   };
 });
