@@ -14,6 +14,12 @@ class Task(db.Model):
     due_date = db.Column(db.DateTime, nullable=True)
 
 
+    def __init__(self, title, status, due_date):
+        self.title = title
+        self.status = status
+        self.due_date = due_date
+
+
 def must_not_be_blank(data):
     if not data:
         raise ValidationError("Data not provided")
