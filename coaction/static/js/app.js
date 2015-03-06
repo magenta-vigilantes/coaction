@@ -15,7 +15,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.config(['$routeProvider', function($routeProvider) {
 
   var routeDefinition = {
-    templateUrl: 'views/task-list.html',
+    templateUrl: 'static/views/task-list.html',
     controller: 'TaskListCtrl',
     controllerAs: 'vm',
     resolve: {
@@ -26,9 +26,9 @@ app.config(['$routeProvider', function($routeProvider) {
   };
 
   $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/task-list', routeDefinition);
+  $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['$location', 'taskList', 'taskService', 'Task', function($location, taskList, taskService, Task){
+.controller('TaskListCtrl', ['taskList', 'taskService', function(taskList, taskService){
 
   var self = this;
 
@@ -36,7 +36,32 @@ app.config(['$routeProvider', function($routeProvider) {
 
 }]);
 
-//remember to capitalize the T in Task
+app.factory('Task', function(){
+  return function(spec) {
+    spec = spec || {};
+    return {
+      url: spec.url
+      // created: Date.now();
+    };
+  };
+});
+
+
+// TO BE CONTINUED
+
+app.controller('MainNavCtrl',
+['$location', 'StringUtil', function($location, StringUtil) {
+  var self = this;
+
+  self.isActive = function (path) {
+    // The default route is a special case.
+    if (path === '/') {
+      return $location.path() === '/';
+    }
+
+    return StringUtil.startsWith($location.path(), path);
+  };
+}]);
 
 app.factory('taskService', ['$http', '$log', function($http, $log){
 
@@ -79,6 +104,15 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     }
   };
 }]);
+
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
