@@ -38,3 +38,16 @@ def add_tasks():
     db.session.commit()
     result = task_schema.dump(Task.query.get(task.id))
     return jsonify({"message": "Created new task", "task": result.data})
+
+@coaction.route("/api/tasks/<int:id>", methods=["PUT"])
+def edit_task(id):
+    if not request.get_json():
+        return jsonify({"message": "No input data provided"}), 400
+    task = Task.query.get_or_404(id)
+    task.title = request.get_json().get("title")
+    task.status = request.get_json().get("status")
+    task.due_date = request.get_json().get("due_date")
+    db.session.commit()
+    return jsonify({"message": "Your Task has been updated"})
+
+
