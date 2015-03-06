@@ -88,21 +88,13 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
 
   return {
     getTaskList: function() {
-      // return get('api/tasks');
-      return [{
-        due_date: 'Jan 1st',
-        status: 'new',
-        title: 'Post some .gifs',
-      },
-      {
-        due_date: 'Jan 2nd',
-        status: 'done',
-        title: 'Post more .gifs'
-      }];
+      return get('api/tasks').then(function(data){
+        return data.tasks;
+      });
     },
 
     getTask: function(id) {
-      return get('api/tasks' + id);
+      return get('api/tasks/' + id);
     },
 
     addTask: function(task) {
