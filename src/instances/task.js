@@ -1,1 +1,12 @@
-//remember to capitalize the T in Task
+app.factory('Task', function(){
+  return function(spec) {
+    spec = spec || {};
+    return {
+      url: spec.url
+      // created: Date.now();
+    };
+  };
+});
+
+
+// TO BE CONTINUED
