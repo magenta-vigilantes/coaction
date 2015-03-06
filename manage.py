@@ -34,9 +34,9 @@ def createdb():
 
 @manager.command
 def seed_tasks():
-    tasks = [("Fake data", "new", "2015-03-10T17:54:48.972000+00:00"),
-             ("Make new friends" "new", "2015-03-10T17:54:48.972000+00:00"),
-             ("Continue to be really, really cool", "new", "2015-03-10T17:54:48.972000+00:00")]
+    tasks = [["Fake data", "new", "2015-03-10T17:54:48.972000+00:00"],
+            ["Make new friends", "new", "2015-03-10T17:54:48.972000+00:00"],
+            ["Continue to be really, really cool", "new", "2015-03-10T17:54:48.972000+00:00"]]
     for title, status, due_date in tasks:
         task = Task(title=title,
                     status=status,
