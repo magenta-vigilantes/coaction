@@ -11,7 +11,6 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
-app.config()
 
 app.config(['$routeProvider', function($routeProvider) {
 
