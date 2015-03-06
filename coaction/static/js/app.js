@@ -11,31 +11,6 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
-
-app.config(['$routeProvider', function($routeProvider) {
-
-  var routeDefinition = {
-    templateUrl: 'static/views/task-list.html',
-    controller: 'TaskListCtrl',
-    controllerAs: 'vm',
-    resolve: {
-      taskList: ['taskService', function(taskService){
-        return taskService.getTaskList();
-      }]
-    }
-  };
-
-  $routeProvider.when('/', routeDefinition);
-  $routeProvider.when('/tasks', routeDefinition);
-}])
-.controller('TaskListCtrl', ['taskList', 'taskService', function(taskList, taskService){
-
-  var self = this;
-
-  self.taskList = taskList;
-
-}]);
-
 app.factory('Task', function(){
   return function(spec) {
     spec = spec || {};
@@ -88,7 +63,17 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
 
   return {
     getTaskList: function() {
-      return get('api/tasks');
+      // return get('api/tasks');
+      return [{
+        due_date: 'Jan 1st',
+        status: 'new',
+        title: 'Post some .gifs',
+      },
+      {
+        due_date: 'Jan 2nd',
+        status: 'done',
+        title: 'Post more .gifs'
+      }];
     },
 
     getTask: function(id) {
@@ -113,6 +98,31 @@ app.factory('StringUtil', function() {
     }
   };
 });
+
+
+app.config(['$routeProvider', function($routeProvider) {
+
+  var routeDefinition = {
+    templateUrl: 'static/views/task-list.html',
+    controller: 'TaskListCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      taskList: ['taskService', function(taskService){
+        return taskService.getTaskList();
+      }]
+    }
+  };
+
+  $routeProvider.when('/', routeDefinition);
+  $routeProvider.when('/tasks', routeDefinition);
+}])
+.controller('TaskListCtrl', ['taskList', 'taskService', function(taskList, taskService){
+
+  var self = this;
+
+  self.taskList = taskList;
+
+}]);
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
