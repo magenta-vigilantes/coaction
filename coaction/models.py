@@ -44,7 +44,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     encrypted_password = db.Column(db.String(60))
 
-    def __init__(self, name, email):
+    def __init__(self, id, name, email):
+        self.id = id
         self.name = name
         self.email = email
 
