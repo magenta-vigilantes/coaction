@@ -58,21 +58,24 @@ def edit_task(id):
 def register():
     if not request.get_json():
         return jsonify({"message": "Must provide username, email, and password"}), 400
-    name_input = request.get_json("name")
-    email_input = request.get_json("email")
-    password_input = request.get_json("password")
+    name_input = request.get_json().get("name")
+    email_input = request.get_json().get("email")
+    password_input = request.get_json().get("password")
+    input_data = dict(name=name_input, email=email_input, password=password_input)
+    print("password =  {}".format(password_input))
     check = User.query.filter_by(email=email_input).first()
+    print("name = {}".format(name_input))
     name_check = User.query.filter_by(name=name_input).first()
     if check:
         return jsonify({"message": "Email address already exists."}), 400
     elif name_check:
         return jsonify({"message": "Please select a unique username."}), 400
     else:
-        input_data = dict(name=name_input, email=email_input, password=password_input)
+        # input_data = dict(name=name_input, email=email_input, pt_password=password_input)
         errors = user_schema.validate(input_data)
         if errors:
             return jsonify(errors), 400
-        user = User(**input_data)
+        user = User(name=name_input, email=email_input, password=password_input)
         db.session.add(user)
         db.session.commit()
         result = user_schema.dump(User.query.get(user.name))
