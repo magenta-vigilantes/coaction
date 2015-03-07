@@ -44,16 +44,17 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     encrypted_password = db.Column(db.String(60))
 
-    def __init__(self, id, name, email):
-        self.id = id
+    def __init__(self, name, email, password):
+        # self.id = id
         self.name = name
         self.email = email
+        self.password = password
 
     def get_password(self):
         return getattr(self, "_password", None)
 
     def set_password(self, password):
-        self._password = password
+        self._password = self.password
         self.encrypted_password = bcrypt.generate_password_hash(password)
 
     password = property(get_password, set_password)
@@ -67,5 +68,5 @@ class User(db.Model, UserMixin):
 
 class UserSchema(Schema):
     class Meta:
-        fields = ("name", "email", "tasks")
+        fields = ("name", "email", "password")
 

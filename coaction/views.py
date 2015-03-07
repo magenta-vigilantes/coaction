@@ -1,10 +1,12 @@
 from flask import Blueprint, flash, jsonify, request
-from .models import Task, TaskSchema
+from flask.ext.login import current_user, login_required, login_user, logout_user
+from .models import Task, TaskSchema, User, UserSchema
 from . import db
 
 
 coaction = Blueprint("coaction", __name__, static_folder="./static")
 task_schema = TaskSchema()
+user_schema = UserSchema()
 
 
 @coaction.route("/")
@@ -50,3 +52,31 @@ def edit_task(id):
     task.due_date = request.get_json().get("due_date")
     db.session.commit()
     return jsonify({"message": "Your Task has been updated"})
+
+
+@coaction.route("/api/register", methods=["POST"])
+def register():
+    if not request.get_json():
+        return jsonify({"message": "Must provide username, email, and password"}), 400
+    name_input = request.get_json().get("name")
+    email_input = request.get_json().get("email")
+    password_input = request.get_json().get("password")
+    input_data = dict(name=name_input, email=email_input, password=password_input)
+    print("password =  {}".format(password_input))
+    check = User.query.filter_by(email=email_input).first()
+    print("name = {}".format(name_input))
+    name_check = User.query.filter_by(name=name_input).first()
+    if check:
+        return jsonify({"message": "Email address already exists."}), 400
+    elif name_check:
+        return jsonify({"message": "Please select a unique username."}), 400
+    else:
+        # input_data = dict(name=name_input, email=email_input, pt_password=password_input)
+        errors = user_schema.validate(input_data)
+        if errors:
+            return jsonify(errors), 400
+        user = User(name=name_input, email=email_input, password=password_input)
+        db.session.add(user)
+        db.session.commit()
+        result = user_schema.dump(User.query.get(user.id))
+        return jsonify({"message": "Created new user", "user": result.data})
