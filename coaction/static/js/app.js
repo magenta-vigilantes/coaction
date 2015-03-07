@@ -11,6 +11,28 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider.when('/tasks/new', {
+    controller: 'NewTaskCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'static/views/add-new-task.html'
+  });
+}]).controller('NewTaskCtrl', ['$location', 'Task', 'taskService', function($location, Task, taskService) {
+
+  var self = this;
+  self.task = Task();
+
+  self.goToTaskList = function () {
+    $location.path('/tasks');
+  };
+
+  self.addTask = function () {
+    taskService.addTask(self.task).then(self.goToTaskList);
+  };
+
+
+
+}]);
 
 app.config(['$routeProvider', function($routeProvider) {
 
@@ -40,8 +62,9 @@ app.factory('Task', function(){
   return function(spec) {
     spec = spec || {};
     return {
-      url: spec.url
-      // created: Date.now();
+      due_date: spec.due_date,
+      status: spec.status || 'new',
+      title: spec.title
     };
   };
 });
@@ -83,6 +106,7 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     })
     .catch(function (error) {
       $log.log(error);
+      throw error;
     });
   }
 
