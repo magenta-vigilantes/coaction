@@ -11,6 +11,28 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider.when('/tasks/new', {
+    controller: 'NewTaskCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'static/views/add-new-task.html'
+  });
+}]).controller('NewTaskCtrl', ['$location', 'Task', 'taskService', function($location, Task, taskService) {
+
+  var self = this;
+  self.task = Task();
+
+  self.goToTaskList = function () {
+    $location.path('/tasks');
+  };
+
+  self.addTask = function () {
+    taskService.addTask(self.task).then(self.goToTaskList);
+  };
+
+
+
+}]);
 
 app.config(['$routeProvider', function($routeProvider) {
 
@@ -28,7 +50,7 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', function(taskList, taskService){
+.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
 
   var self = this;
 
@@ -40,8 +62,9 @@ app.factory('Task', function(){
   return function(spec) {
     spec = spec || {};
     return {
-      url: spec.url
-      // created: Date.now();
+      due_date: spec.due_date,
+      status: spec.status || 'new',
+      title: spec.title
     };
   };
 });
@@ -62,6 +85,10 @@ app.controller('MainNavCtrl',
     return StringUtil.startsWith($location.path(), path);
   };
 }]);
+
+// app.factory('statusService', ['$http', function($http){
+//   function
+// }]);
 
 app.factory('taskService', ['$http', '$log', function($http, $log){
 
@@ -103,6 +130,11 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
 
     deleteTask: function(id) {
       return remove('/api/res/' + id);
+    },
+
+    changeStatus: function(task, status) {
+      task.status = status;
+      taskService.changeStatus(task.id, task);
     }
   };
 }]);

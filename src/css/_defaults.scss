@@ -40,6 +40,7 @@ input, textarea {
   border: 1px solid $input-border-color;
   padding: 0.25em;
   cursor: text;
+  outline: none;
 }
 
 button {
@@ -50,4 +51,5 @@ button {
   color: $alt-accent-fg;
   font-size: 1em;
   cursor: pointer;
+  outline: none;
 }

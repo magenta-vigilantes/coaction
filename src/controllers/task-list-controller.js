@@ -14,7 +14,7 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', function(taskList, taskService){
+.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
 
   var self = this;
 
