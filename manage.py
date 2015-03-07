@@ -34,13 +34,14 @@ def createdb():
 
 @manager.command
 def seed_tasks():
-    tasks = [["Fake data", "new", "2015-03-10T17:54:48.972000+00:00"],
-            ["Make new friends", "new", "2015-03-10T17:54:48.972000+00:00"],
-            ["Continue to be really, really cool", "new", "2015-03-10T17:54:48.972000+00:00"]]
-    for title, status, due_date in tasks:
+    tasks = [["Fake data", "new", "2015-03-10T17:54:48.972000+00:00", "1"],
+            ["Make new friends", "new", "2015-03-10T17:54:48.972000+00:00", "1"],
+            ["Continue to be really, really cool", "new", "2015-03-10T17:54:48.972000+00:00", "1"]]
+    for title, status, due_date, creator in tasks:
         task = Task(title=title,
                     status=status,
-                    due_date=due_date)
+                    due_date=due_date,
+                    creator=creator)
         db.session.add(task)
     db.session.commit()
     print("tasks seeded")
