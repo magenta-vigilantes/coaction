@@ -18,7 +18,6 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     })
     .catch(function (error) {
       $log.log(error);
-      throw error;
     });
   }
 
@@ -39,6 +38,11 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
 
     deleteTask: function(id) {
       return remove('/api/res/' + id);
+    },
+
+    changeStatus: function(task, status) {
+      task.status = status;
+      taskService.changeStatus(task.id, task);
     }
   };
 }]);

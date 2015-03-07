@@ -50,7 +50,7 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', function(taskList, taskService){
+.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
 
   var self = this;
 
@@ -86,6 +86,10 @@ app.controller('MainNavCtrl',
   };
 }]);
 
+// app.factory('statusService', ['$http', function($http){
+//   function
+// }]);
+
 app.factory('taskService', ['$http', '$log', function($http, $log){
 
   function get(url) {
@@ -106,7 +110,6 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     })
     .catch(function (error) {
       $log.log(error);
-      throw error;
     });
   }
 
@@ -127,6 +130,11 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
 
     deleteTask: function(id) {
       return remove('/api/res/' + id);
+    },
+
+    changeStatus: function(task, status) {
+      task.status = status;
+      taskService.changeStatus(task.id, task);
     }
   };
 }]);
