@@ -38,7 +38,7 @@ def add_tasks():
     db.session.add(task)
     db.session.commit()
     result = task_schema.dump(Task.query.get(task.id))
-    return jsonify({"message": "Created new task", "task": result.data})
+    return jsonify({"message": "Created new task", "task": result.data}), 200
 
 @coaction.route("/api/tasks/<int:id>", methods=["PUT"])
 def edit_task(id):
@@ -49,7 +49,7 @@ def edit_task(id):
     task.status = request.get_json().get("status")
     task.due_date = request.get_json().get("due_date")
     db.session.commit()
-    return jsonify({"message": "Your Task has been updated"})
+    return jsonify({"message": "Your Task has been updated"}), 200
 
 
 @coaction.route("/api/register", methods=["POST"])
@@ -78,7 +78,7 @@ def register():
         db.session.commit()
         login_user(user)
         result = user_schema.dump(User.query.get(user.id))
-        return jsonify({"message": "You have been registered and logged in.", "user": result.data})
+        return jsonify({"message": "You have been registered and logged in.", "user": result.data}), 200
 
 
 @coaction.route("/api/logout", methods=["POST"])
@@ -98,4 +98,4 @@ def login():
         login_user(user)
         return jsonify({"message": "You have been logged in."}), 200
     else:
-        return jsonify({"message": "Incorrect Username or Password"}), 401
+        return jsonify({"message": "Incorrect Username or Password"}), 400
