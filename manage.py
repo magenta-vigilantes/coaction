@@ -6,7 +6,7 @@ from flask.ext.migrate import MigrateCommand
 from flask.ext.script.commands import ShowUrls, Clean
 
 from coaction import create_app, db
-from coaction.models import Task, User
+from coaction.models import Task, User, Comment
 
 app = create_app()
 manager = Manager(app)

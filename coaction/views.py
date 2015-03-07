@@ -1,11 +1,12 @@
 from flask import Blueprint, flash, jsonify, request
 from flask.ext.login import current_user, login_required, login_user, logout_user
-from .models import Task, TaskSchema, User, UserSchema
+from .models import Task, TaskSchema, User, UserSchema, Comment, CommentSchema
 from . import db
 
 coaction = Blueprint("coaction", __name__, static_folder="./static")
 task_schema = TaskSchema()
 user_schema = UserSchema()
+comment_schema = CommentSchema()
 
 
 @coaction.route("/")

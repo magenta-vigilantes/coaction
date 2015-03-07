@@ -70,3 +70,19 @@ class UserSchema(Schema):
     class Meta:
         fields = ("name", "email", "password")
 
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = db.Column(db.String(255), nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, task_id, user_id, text, date_created):
+        self.task_id = task_id
+        self.user_id = user_id
+        self.text = text
+        self.date_created = date_created
+
+class CommentSchema(Schema):
+    class Meta:
+        fields = ("task_id", "user_id", "text", "date_created")
