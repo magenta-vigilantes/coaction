@@ -10,6 +10,8 @@ class Task(db.Model):
     # assignee = user_id(default=creator)
     due_date = db.Column(db.DateTime, nullable=True)
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User',
+                           backref=db.backref('tasks', lazy='dynamic'))
 
     def __init__(self, title, status, due_date, creator):
         self.title = title
@@ -76,6 +78,8 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     text = db.Column(db.String(255), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False)
+    task = db.relationship('Task',
+                           backref=db.backref('comments', lazy='dynamic'))
 
     def __init__(self, task_id, user_id, text, date_created):
         self.task_id = task_id
