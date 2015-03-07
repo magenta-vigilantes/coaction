@@ -29,7 +29,8 @@ def add_tasks():
     title_input = request.get_json().get("title")
     status_input = request.get_json().get("status")
     due_date_input = request.get_json().get("due_date")
-    input_data = dict(title=title_input, status=status_input, due_date=due_date_input)
+    creator_input = request.get_json().get("creator")
+    input_data = dict(title=title_input, status=status_input, due_date=due_date_input, creator=creator_input)
     errors = task_schema.validate(input_data)
     if errors:
         return jsonify(errors), 400
@@ -49,5 +50,3 @@ def edit_task(id):
     task.due_date = request.get_json().get("due_date")
     db.session.commit()
     return jsonify({"message": "Your Task has been updated"})
-
-
