@@ -6,7 +6,7 @@ from flask.ext.migrate import MigrateCommand
 from flask.ext.script.commands import ShowUrls, Clean
 
 from coaction import create_app, db
-from coaction.models import Task
+from coaction.models import Task, User
 
 app = create_app()
 manager = Manager(app)
@@ -36,13 +36,16 @@ def createdb():
 def seed_tasks():
     tasks = [["Fake data", "new", "2015-03-10T17:54:48.972000+00:00", "1"],
             ["Make new friends", "new", "2015-03-10T17:54:48.972000+00:00", "1"],
-            ["Continue to be really, really cool", "new", "2015-03-10T17:54:48.972000+00:00", "1"]]
+            ["Continue to be really, really cool", "new", "2015-03-10T17:54:48.972000+00:00", "1"   ]]
     for title, status, due_date, creator in tasks:
         task = Task(title=title,
                     status=status,
                     due_date=due_date,
                     creator=creator)
-        db.session.add(task)
+    users = [["Skul", "test@example.org"]]
+    for name, email in users:
+        user = User(name=name, email=email)
+        db.session.add(task, user)
     db.session.commit()
     print("tasks seeded")
 
