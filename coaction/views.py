@@ -3,7 +3,6 @@ from flask.ext.login import current_user, login_required, login_user, logout_use
 from .models import Task, TaskSchema, User, UserSchema
 from . import db
 
-
 coaction = Blueprint("coaction", __name__, static_folder="./static")
 task_schema = TaskSchema()
 user_schema = UserSchema()
@@ -13,8 +12,6 @@ user_schema = UserSchema()
 def index():
     return coaction.send_static_file("index.html")
 
-
-## Add your API views here
 
 @coaction.route("/api/tasks", methods=["GET"])
 def get_tasks():
@@ -78,5 +75,26 @@ def register():
         user = User(name=name_input, email=email_input, password=password_input)
         db.session.add(user)
         db.session.commit()
+        login_user(user)
         result = user_schema.dump(User.query.get(user.id))
-        return jsonify({"message": "Created new user", "user": result.data})
+        return jsonify({"message": "You have been registered and logged in.", "user": result.data})
+
+
+@coaction.route("/api/logout", methods=["POST"])
+def logout():
+    logout_user()
+    return "You have been logged out. Do come again.", 200
+
+
+@coaction.route("/api/login", methods=["POST"])
+def login():
+    if not request.get_json():
+        return jsonify({"message": "Please try again."}), 400
+    name_input = request.get_json().get("name")
+    password_input = request.get_json().get("password")
+    user = User.query.filter_by(name=name_input).first()
+    if user and user.check_password(password_input):
+        login_user(user)
+        return jsonify({"message": "You have been logged in."}), 200
+    else:
+        return jsonify({"message": "Incorrect Username or Password"}), 401
