@@ -78,5 +78,5 @@ def register():
         user = User(name=name_input, email=email_input, password=password_input)
         db.session.add(user)
         db.session.commit()
-        result = user_schema.dump(User.query.get(user.name))
+        result = user_schema.dump(User.query.get(user.id))
         return jsonify({"message": "Created new user", "user": result.data})

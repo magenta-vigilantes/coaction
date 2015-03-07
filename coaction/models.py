@@ -68,5 +68,5 @@ class User(db.Model, UserMixin):
 
 class UserSchema(Schema):
     class Meta:
-        fields = ("name", "email", "tasks")
+        fields = ("name", "email", "password")
 
