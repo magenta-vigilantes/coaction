@@ -26,18 +26,11 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-@font-face {
-  font-family: "fontastic";
-  src: url("static/fonts/fontastic.eot");
-  src: url("static/fonts/fontastic.eot?#iefix") format("embedded-opentype"), url("static/fonts/fontastic.woff") format("woff"), url("static/fonts/fontastic.ttf") format("truetype"), url("static/fonts/fontastic.svg#fontastic") format("svg");
-  font-weight: normal;
-  font-style: normal; }
-
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Rokkitt', serif;
   line-height: 1.4em;
   background: white;
   color: #444; }
@@ -63,6 +56,7 @@ h6 {
   margin: 1.67em 0; }
 
 h1, h2, h3, h4, h5, h6 {
+  font-family: 'Questrial', sans-serif;
   font-weight: bolder;
   line-height: 1.3em; }
 
@@ -109,7 +103,8 @@ button {
 .main-nav {
   background: #6067b0;
   color: #FFF;
-  padding: 0 2em; }
+  padding: 0 2em;
+  font-family: 'Questrial', serif; }
 
 .app-icon {
   color: inherit; }
