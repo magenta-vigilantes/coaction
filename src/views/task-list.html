@@ -1,9 +1,12 @@
-<h1>Tasks</h1>
+<h1>Tasks <a class="add-task-button" href="#/tasks/new">+</a></h1>
+
+
 
 <ul>
   <li ng-repeat="task in vm.taskList">
+    <input type="checkbox">
     {{task.title}}
-    {{task.status}}
-    {{task.creator}}
+    <!-- {{task.status}}
+    {{task.creator}} -->
   </li>
 </ul>
