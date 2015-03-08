@@ -150,3 +150,11 @@ def view_assigned_tasks(user_id):
     serializer = TaskSchema(many=True)
     result = serializer.dump(tasks)
     return jsonify({"tasks": result.data}), 200
+
+
+@coaction.route("/api/users/<user_id>/handoff", methods=["GET"])
+def see_tasks_assigned_to_others(user_id):
+    tasks = Task.query.filter(Task.assignee != current_user.id)
+    serializer = TaskSchema(many=True)
+    result = serializer.dump(tasks)
+    return jsonify({"tasks": result.data}), 200
