@@ -40,6 +40,7 @@ def add_tasks():
     result = task_schema.dump(Task.query.get(task.id))
     return jsonify({"message": "Created new task", "task": result.data}), 200
 
+
 @coaction.route("/api/tasks/<int:id>", methods=["PUT"])
 def edit_task(id):
     if not request.get_json():
@@ -99,3 +100,33 @@ def login():
         return jsonify({"message": "You have been logged in."}), 200
     else:
         return jsonify({"message": "Incorrect Username or Password"}), 400
+
+
+@coaction.route("/api/tasks/<task_id>/comments", methods=["POST"])
+def add_comment(task_id):
+    if not request.get_json():
+        return jsonify({"message": "No input data provided"}), 400
+    task_input = request.get_json().get("task_id")
+    user_input = request.get_json().get("user_id")
+    text_input = request.get_json().get("text")
+    date_created_input = request.get_json().get("date_created")
+    input_data = dict(text=text_input, date_created=date_created_input, user_id=user_input, task_id=task_input)
+    errors = comment_schema.validate(input_data)
+    if errors:
+        return jsonify(errors), 400
+    comment = Comment(**input_data)
+    db.session.add(comment)
+    db.session.commit()
+    result = comment_schema.dump(Comment.query.get(comment.id))
+    return jsonify({"message": "Comment added", "comment": result.data}), 200
+
+
+@coaction.route("/api/tasks/<task_id>/comments/<comment_id>", methods=["PUT"])
+def edit_comment(task_id, comment_id):
+    if not request.get_json():
+        return jsonify({"message": "No input data provided"}), 400
+    comment = Comment.query.get_or_404(id)
+    comment.text = request.get_json().get("text")
+    comment.date_created = request.get_json().get("date_created")
+    db.session.commit()
+    return jsonify({"message": "Your comment has been edited"}), 200
