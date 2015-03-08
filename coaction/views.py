@@ -131,4 +131,4 @@ def view_user_tasks(user_id):
     tasks = Task.query.filter_by(creator=current_user.id)
     serializer = TaskSchema(many=True)
     result = serializer.dump(tasks)
-    return jsonify({"tasks": result.data})
+    return jsonify({"tasks": result.data}), 200
