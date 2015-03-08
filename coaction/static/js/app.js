@@ -34,6 +34,27 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 }]);
 
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider.when('/signup/', {
+    controller: 'NewUserCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'static/views/signup.html'
+  });
+}])
+.controller('NewUserCtrl', ['$location', 'User', 'userService', function($location, User, userService){
+  var self = this;
+
+  self.user = User();
+
+  self.goToTaskList = function () {
+    $location.path('/tasks');
+  };
+
+  self.addUser = function(){
+    userService.addUser(self.user).then(self.goToTaskList);
+  };
+}]);
+
 app.config(['$routeProvider', function($routeProvider) {
 
   var routeDefinition = {
@@ -58,6 +79,27 @@ app.config(['$routeProvider', function($routeProvider) {
 
 }]);
 
+app.config(['$routeProvider', function($routeProvider) {
+  var routeDefinition = {
+    templateUrl: 'static/views/user.html',
+    controller: 'UserCtrl',
+    controllerAs: 'vm',
+    resolve: {
+      user: ['$route', 'userService', function($route, userService){
+        var routeParams = $route.current.params;
+        return userService.getByUserId(routeParams.userid);
+      }]
+    }
+  };
+
+  $routeProvider.when('/users/:userid', routeDefinition); //IF PROJECT MESSES UP, CHECK HERE!!!!!!!!
+}])
+.controller('UserCtrl', ['user', function(user){
+  var self = this;
+
+  self.user = user;
+}]);
+
 app.factory('Task', function(){
   return function(spec) {
     spec = spec || {};
@@ -71,6 +113,15 @@ app.factory('Task', function(){
 
 
 // TO BE CONTINUED
+
+app.factory('User', function(){
+  return function (spec) {
+    spec = spec || {};
+    return {
+      userId: spec.userId || ''
+    };
+  };
+});
 
 app.controller('MainNavCtrl',
 ['$location', 'StringUtil', function($location, StringUtil) {
@@ -135,6 +186,39 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     changeStatus: function(task, status) {
       task.status = status;
       taskService.changeStatus(task.id, task);
+    }
+  };
+}]);
+
+app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
+  function get(url) {
+    return processAjaxPromise($http.get(url));
+  }
+
+  function processAjaxPromise(promise){
+    return promise.then(function(result){
+      return result.data;
+    })
+    .catch(function(error){
+      $log.log(error);
+    });
+  }
+
+  return {
+    getUserList: function () {
+      return get('/api/users');
+    },
+
+    getByUserId: function(userId){
+      if (!userId) {
+        throw new Error('getByUserId requires a user id');
+      }
+
+      return get('/api/users/' + userId);
+    },
+
+    addUser: function(user) {
+      return processAjaxPromise($http.post('/api/users', user));
     }
   };
 }]);
