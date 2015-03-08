@@ -11,6 +11,27 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
+app.config(['$routeProvider', function($routeProvider){
+  $routeProvider.when('/login/', {
+    controller: 'LoginCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'static/views/login.html'
+  });
+}])
+.controller('LoginCtrl', ['$location', 'User', 'userService', function($location, User, userService){
+  var self = this;
+
+  self.user = User();
+
+  self.goToTaskList = function() {
+    $location.path('/tasks');
+  };
+
+  self.loginUser = function(){
+    userService.loginUser(self.user).then(self.goToTaskList);
+  }
+}])
+
 app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.when('/tasks/new', {
     controller: 'NewTaskCtrl',
@@ -118,7 +139,9 @@ app.factory('User', function(){
   return function (spec) {
     spec = spec || {};
     return {
-      userId: spec.userId || ''
+      name: spec.name,
+      email: spec.email,
+      password: spec.password
     };
   };
 });
@@ -218,7 +241,11 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
     },
 
     addUser: function(user) {
-      return processAjaxPromise($http.post('/api/users', user));
+      return processAjaxPromise($http.post('/api/register', user));
+    },
+
+    loginUser: function(user) {
+      return processAjaxPromise($http.post('/api/login', user));
     }
   };
 }]);

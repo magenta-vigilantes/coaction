@@ -26,7 +26,11 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
     },
 
     addUser: function(user) {
-      return processAjaxPromise($http.post('/api/users', user));
+      return processAjaxPromise($http.post('/api/register', user));
+    },
+
+    loginUser: function(user) {
+      return processAjaxPromise($http.post('/api/login', user));
     }
   };
 }]);
