@@ -121,6 +121,20 @@ app.config(['$routeProvider', function($routeProvider) {
   self.user = user;
 }]);
 
+app.controller('MainNavCtrl',
+['$location', 'StringUtil', function($location, StringUtil) {
+  var self = this;
+
+  self.isActive = function (path) {
+    // The default route is a special case.
+    if (path === '/') {
+      return $location.path() === '/';
+    }
+
+    return StringUtil.startsWith($location.path(), path);
+  };
+}]);
+
 app.factory('Task', function(){
   return function(spec) {
     spec = spec || {};
@@ -145,20 +159,6 @@ app.factory('User', function(){
     };
   };
 });
-
-app.controller('MainNavCtrl',
-['$location', 'StringUtil', function($location, StringUtil) {
-  var self = this;
-
-  self.isActive = function (path) {
-    // The default route is a special case.
-    if (path === '/') {
-      return $location.path() === '/';
-    }
-
-    return StringUtil.startsWith($location.path(), path);
-  };
-}]);
 
 // app.factory('statusService', ['$http', function($http){
 //   function
