@@ -246,6 +246,10 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
 
     loginUser: function(user) {
       return processAjaxPromise($http.post('/api/login', user));
+    },
+
+    logoutUser: function(user) {
+      return processAjaxPromise($http.post('/api/logout', user));
     }
   };
 }]);
