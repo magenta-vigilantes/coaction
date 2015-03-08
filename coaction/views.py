@@ -124,3 +124,11 @@ def edit_comment(task_id, comment_id):
     comment.date_created = request.get_json().get("date_created")
     db.session.commit()
     return jsonify({"message": "Your comment has been edited"}), 200
+
+
+@coaction.route("/api/users/<user_id>/", methods=["GET"])
+def view_user_tasks(user_id):
+    tasks = Task.query.filter_by(creator=current_user.id)
+    serializer = TaskSchema(many=True)
+    result = serializer.dump(tasks)
+    return jsonify({"tasks": result.data}), 200
