@@ -134,3 +134,11 @@ def view_user_tasks(user_id):
     serializer = TaskSchema(many=True)
     result = serializer.dump(tasks)
     return jsonify({"tasks": result.data}), 200
+
+
+@coaction.route("/api/users", methods=["GET"])
+def get_users():
+    users = User.query.all()
+    serializer = UserSchema(many=True)
+    result = serializer.dump(users)
+    return jsonify({"users": result.data}), 200

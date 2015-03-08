@@ -72,7 +72,8 @@ class User(db.Model, UserMixin):
 
 class UserSchema(Schema):
     class Meta:
-        fields = ("name", "email", "password", "owned_tasks", "assigned_tasks")
+        fields = ("name", "email")
+
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
