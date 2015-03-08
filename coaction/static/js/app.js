@@ -92,11 +92,15 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
+.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', 'statusService', function(taskList, taskService, Task, statusService){
 
   var self = this;
 
   self.taskList = taskList;
+
+  self.status = function (task) {
+    statusService.status(task);
+  };
 
 }]);
 
@@ -126,8 +130,9 @@ app.factory('Task', function(){
     spec = spec || {};
     return {
       due_date: spec.due_date,
-      status: spec.status || 'new',
-      title: spec.title
+      status: 'new',
+      title: spec.title,
+      assignee: spec.assignee
     };
   };
 });
@@ -160,9 +165,26 @@ app.controller('MainNavCtrl',
   };
 }]);
 
-// app.factory('statusService', ['$http', function($http){
-//   function
-// }]);
+app.factory('statusService', ['$http', function($http) {
+  function post(url, data) {
+    return processAjaxPromise($http.post(url, data));
+  }
+
+  function processAjaxPromise(promise) {
+    return promise.then(function (result) {
+      return result.data;
+    })
+    .catch(function (error) {
+      $log.log(error);
+    });
+  }
+
+  return {
+    status: function (id, task) {
+      return put('/api/res/' + id, { status: 'done' });
+    }
+  };
+}]);
 
 app.factory('taskService', ['$http', '$log', function($http, $log){
 
@@ -203,13 +225,13 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     },
 
     deleteTask: function(id) {
-      return remove('/api/res/' + id);
-    },
-
-    changeStatus: function(task, status) {
-      task.status = status;
-      taskService.changeStatus(task.id, task);
+      return remove('/api/task/' + id);
     }
+
+    // changeStatus: function(task, status) {
+    //   task.status = status;
+    //   taskService.changeStatus(task.id, task);
+    // }
   };
 }]);
 

@@ -3,8 +3,9 @@ app.factory('Task', function(){
     spec = spec || {};
     return {
       due_date: spec.due_date,
-      status: spec.status || 'new',
-      title: spec.title
+      status: 'new',
+      title: spec.title,
+      assignee: spec.assignee
     };
   };
 });

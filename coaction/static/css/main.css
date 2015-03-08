@@ -56,7 +56,7 @@ h6 {
   margin: 1.67em 0; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Questrial', sans-serif;
+  font-family: 'Questrial', 'Century Gothic', sans-serif;
   font-weight: bolder;
   line-height: 1.3em; }
 
@@ -104,7 +104,7 @@ button {
   background: #6067b0;
   color: #FFF;
   padding: 0 2em;
-  font-family: 'Questrial', serif; }
+  font-family: 'Questrial', 'Century Gothic', sans-serif; }
 
 .app-icon {
   color: inherit; }
