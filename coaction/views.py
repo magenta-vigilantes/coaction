@@ -110,8 +110,7 @@ def add_comment(task_id):
     user_input = request.get_json().get("user_id")
     text_input = request.get_json().get("text")
     date_created_input = request.get_json().get("date_created")
-    input_data = dict(text=text_input, date_created=date_created_input, user_id=user_input,
-                      task_id=task_input)
+    input_data = dict(text=text_input, date_created=date_created_input, user_id=user_input, task_id=task_input)
     errors = comment_schema.validate(input_data)
     if errors:
         return jsonify(errors), 400
