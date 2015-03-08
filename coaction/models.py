@@ -7,17 +7,16 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(255), nullable=False, default="new")
-    # assignee = user_id(default=creator)
     due_date = db.Column(db.DateTime, nullable=True)
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User',
-                           backref=db.backref('tasks', lazy='dynamic'))
+    assignee = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
-    def __init__(self, title, status, due_date, creator):
+    def __init__(self, title, status, due_date, creator, assignee):
         self.title = title
         self.status = status
         self.due_date = due_date
         self.creator = creator
+        self.assignee = assignee
 
 
 def must_not_be_blank(data):
@@ -30,9 +29,10 @@ class TaskSchema(Schema):
     status = fields.Str(required=True, validate=must_not_be_blank)
     due_date = fields.DateTime(required=False)
     creator = fields.Integer(required=False)
+    assignee = fields.Integer(required=False)
 
     class Meta:
-        fields = ("title", "status", "due_date", "creator")
+        fields = ("title", "status", "due_date", "creator", "assignee")
 
 
 @login_manager.user_loader
@@ -45,6 +45,8 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     encrypted_password = db.Column(db.String(60))
+    owned_tasks = db.relationship('Task', backref='owner', lazy='dynamic', foreign_keys="Task.creator")
+    assigned_tasks = db.relationship('Task', backref='assigned', lazy='dynamic', foreign_keys="Task.assignee")
 
     def __init__(self, name, email, password):
         # self.id = id
@@ -70,7 +72,7 @@ class User(db.Model, UserMixin):
 
 class UserSchema(Schema):
     class Meta:
-        fields = ("name", "email", "password")
+        fields = ("name", "email", "password", "owned_tasks", "assigned_tasks")
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
