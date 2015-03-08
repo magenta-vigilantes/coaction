@@ -3,7 +3,7 @@ app.factory('Task', function(){
     spec = spec || {};
     return {
       due_date: spec.due_date,
-      status: 'new',
+      status: spec.status || 'new',
       title: spec.title,
       assignee: spec.assignee
     };

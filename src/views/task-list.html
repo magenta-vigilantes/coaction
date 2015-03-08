@@ -6,7 +6,7 @@
   <li class="task-list-item" ng-repeat="task in vm.taskList">
 
     <div class="checkbox-container">
-      <input class="task-checkbox" type="checkbox" ng-checked="vm.status(task.id)">
+      <button class="task-checkbox" ng-click="vm.status(task, 'new')">Done?</button>
     </div>
 
     <div class="task-content">

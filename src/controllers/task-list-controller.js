@@ -14,14 +14,16 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', 'statusService', function(taskList, taskService, Task, statusService){
+.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
 
   var self = this;
 
   self.taskList = taskList;
 
-  self.status = function (task) {
-    statusService.status(task);
+  self.status = function (task, status) {
+    task.status = status;
+    taskService.status(task.id, task);
+    console.log(task);
   };
 
 }]);
