@@ -1,19 +1,21 @@
 <h1>Add New Task</h1>
 
 <form class="new-task-form" ng-submit="vm.addTask()">
-
+  <label class="task-input-label">Task</label>
   <div class="task-input__title">
     <input type="text" ng-model="vm.task.title" placeholder="Type here">
   </div>
 
+  <label class="task-input-label">Due Date</label>
   <div class="task-input__date">
     <input type="date" ng-model="vm.task.due_date">
   </div>
 
+  <label class="task-input-label">Assign Task</label>
   <div class="task-input__status">
-    <select ng-model="vm.task.status">
-      <option>New</option>
-      <option>In Progress</option>
+    <select ng-model="vm.users.name" size="vm.users.name.length">
+      <option>Bobby</option>
+      <option>Grace</option>
     </select>
   </div>
 
