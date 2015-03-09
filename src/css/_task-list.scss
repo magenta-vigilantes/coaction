@@ -1,12 +1,37 @@
 .checkbox-container {
   display: inline-block;
+  position: relative;
+  height: 100%;
+}
+
+.task-list-item {
+  width: 95%;
 }
 
 .task-content {
   margin: 1em;
   padding: 2em 0 2em 1em;
-  background: #F4F4F4;
+  background: #EDE5B6;
   display: inline-block;
-  width: 100%;
-  max-width: 30em;
+  width: 75%;
+  // max-width: 30em;
+  border: solid 5px $accent-color-dark;
+  font-family: "rokkitt";
+  font-size: 2em;
+}
+
+.mark-complete {
+  font-family: "checkboxes";
+  content: "0";
+  font-size: 1em;
+  background: white;
+  border: 2.5px solid #D42461;
+  padding: 0;
+  border-radius: .25em;
+  // position: absolute;
+  bottom: 1em;
+}
+
+.mark-complete:active {
+  color: $accent-color-dark;
 }

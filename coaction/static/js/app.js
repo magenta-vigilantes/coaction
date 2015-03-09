@@ -32,6 +32,27 @@ app.config(['$routeProvider', function($routeProvider){
   }
 }])
 
+app.config(['$routeProvider', function($routeProvider){
+  $routeProvider.when('/logout/', {
+    controller: 'LogoutCtrl',
+    controllerAs: 'vm',
+    templateUrl: 'api/logout/'
+  });
+}])
+.controller('LoginCtrl', ['$location', 'User', 'userService', function($location, User, userService){
+  var self = this;
+
+  self.user = User();
+
+  self.goToLogin = function() {
+    $location.path('/login');
+  };
+
+  self.logoutUser = function(){
+    userService.loginUser(self.user).then(self.goToLogin);
+  }
+}])
+
 app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.when('/tasks/new', {
     controller: 'NewTaskCtrl',
@@ -92,11 +113,17 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
+.controller('TaskListCtrl', ['$location', 'taskList', 'taskService', 'Task', 'userService', 'User', function($location, taskList, taskService, Task, userService, User){
 
   var self = this;
 
   self.taskList = taskList;
+
+  self.status = function (task, status) {
+    task.status = status;
+    console.log(task.id);
+    taskService.status(task.id, task);
+  };
 
 }]);
 
@@ -127,7 +154,8 @@ app.factory('Task', function(){
     return {
       due_date: spec.due_date,
       status: spec.status || 'new',
-      title: spec.title
+      title: spec.title,
+      assignee: spec.assignee
     };
   };
 });
@@ -160,8 +188,34 @@ app.controller('MainNavCtrl',
   };
 }]);
 
-// app.factory('statusService', ['$http', function($http){
-//   function
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
+
+// app.factory('statusService', ['$http', function($http) {
+//   function post(url, data) {
+//     return processAjaxPromise($http.post(url, data));
+//   }
+//
+//   function processAjaxPromise(promise) {
+//     return promise.then(function (result) {
+//       return result.data;
+//     })
+//     .catch(function (error) {
+//       $log.log(error);
+//     });
+//   }
+//
+//   return {
+//     status: function (id, data) {
+//       return put('/api/tasks/' + id, data);
+//     }
+//   };
 // }]);
 
 app.factory('taskService', ['$http', '$log', function($http, $log){
@@ -172,6 +226,10 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
 
   function post(url, task) {
     return processAjaxPromise($http.post(url, task));
+  }
+
+  function put(url, data) {
+    return processAjaxPromise($http.put(url, data));
   }
 
   function remove(url) {
@@ -203,12 +261,13 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     },
 
     deleteTask: function(id) {
-      return remove('/api/res/' + id);
+      return remove('/api/task/' + id);
     },
 
-    changeStatus: function(task, status) {
-      task.status = status;
-      taskService.changeStatus(task.id, task);
+    status: function(id, data) {
+      console.log(id);
+      return put('api/tasks/' + id, data);
+
     }
   };
 }]);
@@ -253,15 +312,6 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
     }
   };
 }]);
-
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();

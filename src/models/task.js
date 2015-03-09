@@ -4,7 +4,8 @@ app.factory('Task', function(){
     return {
       due_date: spec.due_date,
       status: spec.status || 'new',
-      title: spec.title
+      title: spec.title,
+      assignee: spec.assignee
     };
   };
 });

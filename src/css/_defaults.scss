@@ -2,10 +2,10 @@ body {
   font-family: $body-font;
   line-height: 1.4em;
   background: $bg-color;
-  color: $fg-color;
+  color: $accent-color-dark;
 }
 
-h1 { font-size: 2em; margin: .67em 0 }
+h1 { font-size: 3em; margin: .67em 0 }
 h2 { font-size: 1.5em; margin: .75em 0 }
 h3 { font-size: 1.17em; margin: .83em 0 }
 h5 { font-size: .83em; margin: 1.5em 0 }
@@ -23,13 +23,13 @@ p {
 }
 
 a {
-  color: $alt-bold-color;
+  color: $alt-accent-bg;
   text-decoration: none;
   outline: none;
 }
 
 a:hover {
-  color: $alt-accent-bg;
+  color: #4F9EE5;
 }
 
 td {
@@ -53,4 +53,5 @@ button {
   font-size: 1em;
   cursor: pointer;
   outline: none;
+  border-radius: 0.5em;
 }
