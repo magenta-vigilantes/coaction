@@ -32,7 +32,7 @@ class TaskSchema(Schema):
     assignee = fields.Integer(required=False)
 
     class Meta:
-        fields = ("title", "status", "due_date", "creator", "assignee")
+        fields = ("id", "title", "status", "due_date", "creator", "assignee")
 
 
 @login_manager.user_loader
