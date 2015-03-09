@@ -113,7 +113,7 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', routeDefinition);
   $routeProvider.when('/tasks', routeDefinition);
 }])
-.controller('TaskListCtrl', ['taskList', 'taskService', 'Task', function(taskList, taskService, Task){
+.controller('TaskListCtrl', ['$location', 'taskList', 'taskService', 'Task', 'userService', 'User', function($location, taskList, taskService, Task, userService, User){
 
   var self = this;
 
@@ -187,15 +187,6 @@ app.controller('MainNavCtrl',
     return StringUtil.startsWith($location.path(), path);
   };
 }]);
-
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
 
 // app.factory('statusService', ['$http', function($http) {
 //   function post(url, data) {
@@ -312,6 +303,15 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
     }
   };
 }]);
+
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
