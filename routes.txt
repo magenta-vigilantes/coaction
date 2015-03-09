@@ -7,35 +7,35 @@ home
 "/api/tasks" methods = GET
 get all tasks
 
-"/api/tasks" methods = POST
+"/api/tasks/" methods = POST
 add tasks
 
-"/api/tasks/<task_id>" methods = PUT
+"/api/tasks/<task_id>/" methods = PUT
 edit a task
 
-"/api/register" methods = POST
+"/api/register/" methods = POST
 register a new user. name and email must be unique. user will be logged in.
 
-"/api/logout" methods = POST
+"/api/logout/" methods = POST
 Log out current user
 
-"/api/login" methods = POST
+"/api/login/" methods = POST
 Log in as user
 
-"/api/tasks/<task_id>/comments" methods = POST
+"/api/tasks/<task_id>/comments/" methods = POST
 add a comment to a task
 
-"/api/tasks/<task_id>/comments/<comment_id>" methods = PUT
+"/api/tasks/<task_id>/comments/<comment_id>/" methods = PUT
 edit a comment
 
 "/api/users/<user_id>/" methods = GET
 view all tasks for yourself
 
-"/api/users" methods = GET
+"/api/users/" methods = GET
 view all users
 
-"/api/users/<user_id>/assigned" methods = GET
+"/api/users/<user_id>/assigned/" methods = GET
 view all tasks assigned to current user
 
-"/api/users/<user_id>/handoff" methods = GET
+"/api/users/<user_id>/handoff/" methods = GET
 view all tasks current user has created, but are assigned to someone else

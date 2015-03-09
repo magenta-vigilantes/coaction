@@ -14,7 +14,7 @@ def index():
     return coaction.send_static_file("index.html")
 
 
-@coaction.route("/api/tasks", methods=["GET"])
+@coaction.route("/api/tasks/", methods=["GET"])
 def get_tasks():
     tasks = Task.query.all()
     serializer = TaskSchema(many=True)
@@ -22,7 +22,7 @@ def get_tasks():
     return jsonify({"tasks": result.data})
 
 
-@coaction.route("/api/tasks", methods=["POST"])
+@coaction.route("/api/tasks/", methods=["POST"])
 def add_tasks():
     if not request.get_json():
         return jsonify({"message": "No input data provided"}), 400
@@ -41,11 +41,11 @@ def add_tasks():
     return jsonify({"message": "Created new task", "task": result.data}), 200
 
 
-@coaction.route("/api/tasks/<int:id>", methods=["PUT"])
-def edit_task(id):
+@coaction.route("/api/tasks/<task_id>/", methods=["PUT"])
+def edit_task(task_id):
     if not request.get_json():
         return jsonify({"message": "No input data provided"}), 400
-    task = Task.query.get_or_404(id)
+    task = Task.query.get_or_404(task_id)
     task.title = request.get_json().get("title")
     task.status = request.get_json().get("status")
     task.due_date = request.get_json().get("due_date")
@@ -54,7 +54,7 @@ def edit_task(id):
     return jsonify({"message": "Your Task has been updated"}), 200
 
 
-@coaction.route("/api/register", methods=["POST"])
+@coaction.route("/api/register/", methods=["POST"])
 def register():
     if not request.get_json():
         return jsonify({"message": "Must provide username, email, and password"}), 400
@@ -80,13 +80,13 @@ def register():
         return jsonify({"message": "You have been registered and logged in.", "user": result.data}), 200
 
 
-@coaction.route("/api/logout", methods=["POST"])
+@coaction.route("/api/logout/", methods=["POST"])
 def logout():
     logout_user()
     return "You have been logged out. Do come again.", 200
 
 
-@coaction.route("/api/login", methods=["POST"])
+@coaction.route("/api/login/", methods=["POST"])
 def login():
     if not request.get_json():
         return jsonify({"message": "Please try again."}), 400
@@ -100,7 +100,7 @@ def login():
         return jsonify({"message": "Incorrect Username or Password"}), 400
 
 
-@coaction.route("/api/tasks/<task_id>/comments", methods=["POST"])
+@coaction.route("/api/tasks/<task_id>/comments/", methods=["POST"])
 def add_comment(task_id):
     if not request.get_json():
         return jsonify({"message": "No input data provided"}), 400
@@ -117,11 +117,11 @@ def add_comment(task_id):
     return jsonify({"message": "Comment added", "comment": result.data}), 200
 
 
-@coaction.route("/api/tasks/<task_id>/comments/<comment_id>", methods=["PUT"])
+@coaction.route("/api/tasks/<task_id>/comments/<comment_id>/", methods=["PUT"])
 def edit_comment(task_id, comment_id):
     if not request.get_json():
         return jsonify({"message": "No input data provided"}), 400
-    comment = Comment.query.get_or_404(id)
+    comment = Comment.query.get_or_404(comment_id)
     comment.text = request.get_json().get("text")
     comment.date_created = request.get_json().get("date_created")
     db.session.commit()
@@ -136,7 +136,7 @@ def view_user_tasks(user_id):
     return jsonify({"tasks": result.data}), 200
 
 
-@coaction.route("/api/users", methods=["GET"])
+@coaction.route("/api/users/", methods=["GET"])
 def get_users():
     users = User.query.all()
     serializer = UserSchema(many=True)
@@ -144,7 +144,7 @@ def get_users():
     return jsonify({"users": result.data}), 200
 
 
-@coaction.route("/api/users/<user_id>/assigned", methods=["GET"])
+@coaction.route("/api/users/<user_id>/assigned/", methods=["GET"])
 def view_assigned_tasks(user_id):
     tasks = Task.query.filter_by(assignee=current_user.id)
     serializer = TaskSchema(many=True)
@@ -152,7 +152,7 @@ def view_assigned_tasks(user_id):
     return jsonify({"tasks": result.data}), 200
 
 
-@coaction.route("/api/users/<user_id>/handoff", methods=["GET"])
+@coaction.route("/api/users/<user_id>/handoff/", methods=["GET"])
 def see_tasks_assigned_to_others(user_id):
     tasks = Task.query.filter(Task.assignee != current_user.id)
     serializer = TaskSchema(many=True)
