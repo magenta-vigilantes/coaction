@@ -100,8 +100,8 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.status = function (task, status) {
     task.status = status;
+    console.log(task.id);
     taskService.status(task.id, task);
-    console.log(task);
   };
 
 }]);
@@ -235,8 +235,9 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     },
 
     status: function(id, data) {
-      return put('api/tasks/' + id, data);
       console.log(id);
+      return put('api/tasks/' + id, data);
+
     }
   };
 }]);
