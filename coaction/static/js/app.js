@@ -188,15 +188,6 @@ app.controller('MainNavCtrl',
   };
 }]);
 
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
-
 // app.factory('statusService', ['$http', function($http) {
 //   function post(url, data) {
 //     return processAjaxPromise($http.post(url, data));
@@ -312,6 +303,15 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
     }
   };
 }]);
+
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
