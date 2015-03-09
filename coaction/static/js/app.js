@@ -121,8 +121,8 @@ app.config(['$routeProvider', function($routeProvider) {
 
   self.status = function (task, status) {
     task.status = status;
+    console.log(task.id);
     taskService.status(task.id, task);
-    console.log(task);
   };
 
 }]);
@@ -187,6 +187,15 @@ app.controller('MainNavCtrl',
     return StringUtil.startsWith($location.path(), path);
   };
 }]);
+
+app.factory('StringUtil', function() {
+  return {
+    startsWith: function (str, subStr) {
+      str = str || '';
+      return str.slice(0, subStr.length) === subStr;
+    }
+  };
+});
 
 // app.factory('statusService', ['$http', function($http) {
 //   function post(url, data) {
@@ -256,8 +265,9 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     },
 
     status: function(id, data) {
-      return put('api/tasks/' + id, data);
       console.log(id);
+      return put('api/tasks/' + id, data);
+
     }
   };
 }]);
@@ -302,15 +312,6 @@ app.factory('userService', ['$http', '$q', '$log', function($http, $q, $log){
     }
   };
 }]);
-
-app.factory('StringUtil', function() {
-  return {
-    startsWith: function (str, subStr) {
-      str = str || '';
-      return str.slice(0, subStr.length) === subStr;
-    }
-  };
-});
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();

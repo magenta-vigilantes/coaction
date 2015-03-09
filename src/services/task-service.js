@@ -45,8 +45,9 @@ app.factory('taskService', ['$http', '$log', function($http, $log){
     },
 
     status: function(id, data) {
-      return put('api/tasks/' + id, data);
       console.log(id);
+      return put('api/tasks/' + id, data);
+
     }
   };
 }]);
